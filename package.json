@@ -1,0 +1,12 @@
+{
+  "name": "oto-dispatch",
+  "version": "3.0.0",
+  "description": "Админавтотрап · модуль оперативной диспетчеризации инженеров ОТО — web-приложение по карте аэродрома (слои QGIS / GeoJSON)",
+  "private": true,
+  "scripts": {
+    "build": "node tools/geo-pack.js && node build.js",
+    "start": "node server/node-server.js --port ${PORT:-8080} --sim",
+    "test": "node test/smoke1.js && node test/smoke2.js && node test/sysreq.js && node test/geo.js"
+  },
+  "engines": { "node": ">=18" }
+}

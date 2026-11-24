@@ -1,0 +1,22 @@
+# Запуск: docker compose up -d --build     Остановка: docker compose down
+services:
+  oto:
+    build: .
+    image: oto-dispatch:latest
+    container_name: oto
+    restart: unless-stopped
+    ports:
+      - "8080:8080"            # снаружи:внутри; за nginx замените на "127.0.0.1:8080:8080"
+    environment:
+      PORT: 8080
+      SCALE: 1                 # 1 = реальное время; 10 = ускорение для демонстрации
+      SIM: 0                   # 1 = имитатор движения ВС, транспорта и инженеров (учебный режим)
+      PACK: GEO-MAP            # локация по слоям QGIS
+      TZ: Europe/Moscow
+      # Боевая эксплуатация: свои PIN вместо учебных и без подсказок PIN (имитатор при этом выключите: SIM: 0)
+      # OTO_PINS: "SM-01=7391,AG-01=5520,AG-02=6604"
+      # OTO_DEMO: 0
+    volumes:
+      - oto-data:/app/data/runtime
+volumes:
+  oto-data:

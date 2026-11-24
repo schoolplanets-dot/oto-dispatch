@@ -1,0 +1,12 @@
+# Конфигурация Amvera Cloud: сборка из amvera/Dockerfile, постоянное хранилище /data, HTTP-порт 80
+meta:
+  environment: docker
+  toolchain:
+    name: docker
+    version: latest
+build:
+  dockerfile: amvera/Dockerfile
+  skip: false
+run:
+  persistenceMount: /data
+  containerPort: 80

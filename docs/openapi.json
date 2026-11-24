@@ -1,0 +1,2060 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "OTO dispatch API",
+    "version": "1.0",
+    "description": "Оперативная диспетчеризация инженеров ОТО"
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Проверка работоспособности",
+        "description": "Доступ: публичный.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "{ ok, version, time }"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        }
+      }
+    },
+    "/contract": {
+      "get": {
+        "summary": "Самоописание API-контракта (таблица маршрутов)",
+        "description": "Доступ: публичный.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "{ version, endpoints[] }"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        }
+      }
+    },
+    "/users/demo": {
+      "get": {
+        "summary": "Список учебных учётных записей для входа",
+        "description": "Доступ: публичный.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "[{ id, name, role, demoPin }]"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Вход: получение bearer-токена",
+        "description": "Доступ: публичный.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "{ token, expiresAt, user }"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  },
+                  "pin": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "userId",
+                  "pin"
+                ]
+              },
+              "example": {
+                "userId": "SM-01",
+                "pin": "2468"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Завершение сеанса",
+        "description": "Доступ: any.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/me": {
+      "get": {
+        "summary": "Текущий пользователь",
+        "description": "Доступ: any.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/time": {
+      "get": {
+        "summary": "Время системы и ускорение имитации",
+        "description": "Доступ: any.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "{ now, scale, tz }"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Изменить ускорение имитационных часов",
+        "description": "Доступ: начальник смены, интеграция.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "scale": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "scale"
+                ]
+              },
+              "example": {
+                "scale": 10
+              }
+            }
+          }
+        }
+      }
+    },
+    "/state": {
+      "get": {
+        "summary": "Сводное состояние для клиентского интерфейса (с учётом роли)",
+        "description": "Доступ: any.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "{ now, tickets[], agents[], vehicles[], aircraft[], alerts[], sources[], stats, routes[] }"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/config/location": {
+      "get": {
+        "summary": "Активный пакет локации (граф, зоны, стоянки, объекты)",
+        "description": "Доступ: any.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "пакет локации oto-location-pack/1"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Загрузить другой пакет локации (перенос без правки кода). Тело: { builtin } или { pack }",
+        "description": "Доступ: начальник смены. Сбрасывает оперативные данные (заявки, журнал).",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "builtin": {
+                    "type": "string"
+                  },
+                  "pack": {
+                    "type": "object"
+                  }
+                },
+                "required": []
+              },
+              "example": {
+                "builtin": "ZIA-DEMO"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/config/zones/{id}/active": {
+      "post": {
+        "summary": "Включить/выключить зону (закрытие участков, строительство)",
+        "description": "Доступ: начальник смены.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "active": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "active"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/config/params": {
+      "get": {
+        "summary": "Параметры расчёта (норматив, пороги)",
+        "description": "Доступ: any.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Изменить параметры расчёта",
+        "description": "Доступ: начальник смены.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "normMinutes": {
+                    "type": "number"
+                  },
+                  "warnMarginS": {
+                    "type": "number"
+                  },
+                  "considerInventory": {
+                    "type": "boolean"
+                  },
+                  "normAircraftAware": {
+                    "type": "boolean"
+                  },
+                  "offerTimeoutS": {
+                    "type": "number"
+                  },
+                  "footKmh": {
+                    "type": "number"
+                  },
+                  "vehicleKmh": {
+                    "type": "object"
+                  },
+                  "boardingS": {
+                    "type": "number"
+                  },
+                  "alightingS": {
+                    "type": "number"
+                  },
+                  "toolPickupS": {
+                    "type": "number"
+                  }
+                },
+                "required": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/classifier": {
+      "get": {
+        "summary": "Открытый классификатор: категории, главы ATA, типы дефектов",
+        "description": "Доступ: any.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "{ categories[], ata{}, types[] }"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/classifier/suggest": {
+      "post": {
+        "summary": "Подсказка типа дефекта по свободному тексту",
+        "description": "Доступ: any.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ]
+              },
+              "example": {
+                "text": "течь гидравлики у левого шасси"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/classifier/types": {
+      "post": {
+        "summary": "Добавить новый тип дефекта в классификатор",
+        "description": "Доступ: начальник смены, инженер.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string"
+                  },
+                  "ata": {
+                    "type": "number"
+                  },
+                  "keywords": {
+                    "type": "array"
+                  },
+                  "defaultUrgency": {
+                    "type": "string"
+                  },
+                  "equipment": {
+                    "type": "string"
+                  },
+                  "requiredTools": {
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "name",
+                  "category",
+                  "ata"
+                ]
+              },
+              "example": {
+                "name": "Отказ датчика угла атаки",
+                "category": "Авионика / связь",
+                "ata": 34,
+                "keywords": [
+                  "датчик угла атаки",
+                  "aoa"
+                ],
+                "defaultUrgency": "urgent"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets": {
+      "post": {
+        "summary": "Зафиксировать сообщение о неисправности (несколько источников)",
+        "description": "Доступ: начальник смены, инженер, интеграция. Идемпотентно по (source, externalRef). Фиксация времени — по часам сервера.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "{ ticket, duplicate }"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "regNo": {
+                    "type": "string"
+                  },
+                  "standId": {
+                    "type": "string"
+                  },
+                  "flight": {
+                    "type": "string"
+                  },
+                  "defectTypeId": {
+                    "type": "string"
+                  },
+                  "ataChapter": {
+                    "type": "number"
+                  },
+                  "category": {
+                    "type": "string"
+                  },
+                  "urgency": {
+                    "type": "string"
+                  },
+                  "aog": {
+                    "type": "boolean"
+                  },
+                  "externalRef": {
+                    "type": "string"
+                  },
+                  "reporter": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "source",
+                  "description"
+                ]
+              },
+              "example": {
+                "source": "crew",
+                "description": "Не работает радиосвязь VHF1, нет приёма от диспетчера",
+                "regNo": "VP-BQA",
+                "externalRef": "ACARS-77231"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Список заявок (инженер видит только свои)",
+        "description": "Доступ: начальник смены, инженер, интеграция.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/tickets/{id}": {
+      "get": {
+        "summary": "Карточка заявки (история статусов, обоснование выбора)",
+        "description": "Доступ: начальник смены, инженер.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Уточнить классификацию / стоянку",
+        "description": "Доступ: начальник смены, инженер.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "defectTypeId": {
+                    "type": "string"
+                  },
+                  "ataChapter": {
+                    "type": "number"
+                  },
+                  "category": {
+                    "type": "string"
+                  },
+                  "standId": {
+                    "type": "string"
+                  }
+                },
+                "required": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{id}/candidates": {
+      "get": {
+        "summary": "Список кандидатов на назначение с обоснованием и причинами отклонения",
+        "description": "Доступ: начальник смены. Время формирования списка фиксируется в журнале.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{ candidates[], rejected[], durationS, durationMs }"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/dispatch/plan": {
+      "post": {
+        "summary": "Сводный план назначений для всех неназначенных заявок (несколько срочных и AOG одновременно)",
+        "description": "Доступ: начальник смены.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "{ items[], unassigned[], durationS }"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/dispatch/plan/apply": {
+      "post": {
+        "summary": "Применить сводный план (назначить рекомендованных исполнителей)",
+        "description": "Доступ: начальник смены.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ticketIds": {
+                    "type": "array"
+                  }
+                },
+                "required": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{id}/assign": {
+      "post": {
+        "summary": "Назначить исполнителя (предложение инженеру)",
+        "description": "Доступ: начальник смены.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "agentId": {
+                    "type": "string"
+                  },
+                  "comment": {
+                    "type": "string"
+                  },
+                  "confirmPreempt": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "agentId"
+                ]
+              },
+              "example": {
+                "agentId": "AG-04"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{id}/reassign": {
+      "post": {
+        "summary": "Переназначить заявку (после начала работ — только начальник смены)",
+        "description": "Доступ: начальник смены.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "agentId": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "confirmPreempt": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "agentId",
+                  "reason"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{id}/accept": {
+      "post": {
+        "summary": "Инженер принимает предложенную заявку",
+        "description": "Доступ: инженер.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/tickets/{id}/decline": {
+      "post": {
+        "summary": "Инженер отклоняет заявку (до принятия — без причины, после — с причиной)",
+        "description": "Доступ: инженер.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{id}/status": {
+      "post": {
+        "summary": "Сменить статус заявки (проверка допустимости перехода и прав)",
+        "description": "Доступ: начальник смены, инженер. Допустимые переходы возвращаются в allowedTransitions карточки.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "to": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "to"
+                ]
+              },
+              "example": {
+                "to": "in_progress"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{id}/stage": {
+      "post": {
+        "summary": "Задать этап начатой работы (диагностика / устранение / проверка / оформление)",
+        "description": "Доступ: инженер.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stage": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "stage"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{id}/flags": {
+      "patch": {
+        "summary": "Установить статус AOG и категорию MEL",
+        "description": "Доступ: начальник смены, инженер.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "aog": {
+                    "type": "boolean"
+                  },
+                  "mel": {
+                    "type": "object"
+                  }
+                },
+                "required": []
+              },
+              "example": {
+                "aog": true,
+                "mel": {
+                  "category": "B",
+                  "ref": "29-11-01"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{id}/urgency": {
+      "post": {
+        "summary": "Изменить срочность",
+        "description": "Доступ: начальник смены.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "urgency": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "urgency"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{id}/note": {
+      "post": {
+        "summary": "Добавить комментарий",
+        "description": "Доступ: начальник смены, инженер.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{id}/route": {
+      "get": {
+        "summary": "Текущий маршрут исполнителя к ВС",
+        "description": "Доступ: начальник смены, инженер.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/tickets/{id}/forecast": {
+      "get": {
+        "summary": "Прогноз норматива по заявке",
+        "description": "Доступ: начальник смены, инженер.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/alerts/{id}/ack": {
+      "post": {
+        "summary": "Квитировать оповещение",
+        "description": "Доступ: начальник смены.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/agents": {
+      "get": {
+        "summary": "Инженеры: положение, допуски, статус, загрузка",
+        "description": "Доступ: начальник смены, интеграция.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/agents/{id}/task": {
+      "get": {
+        "summary": "Текущее задание сотрудника: заявка, предложение, маршрут, режим движения",
+        "description": "Доступ: начальник смены, инженер, интеграция.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{ ticket, offer, movement{mode,route}, warnings[] }"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/agents/{id}/position": {
+      "post": {
+        "summary": "Приём геопозиции сотрудника (устройство или имитатор)",
+        "description": "Доступ: начальник смены, инженер, интеграция. Ошибки приёма фиксируются в журнале. При недоступности канала система использует последнюю известную позицию.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "lat": {
+                    "type": "number"
+                  },
+                  "lon": {
+                    "type": "number"
+                  },
+                  "ts": {
+                    "type": "any"
+                  },
+                  "speedMs": {
+                    "type": "number"
+                  },
+                  "heading": {
+                    "type": "number"
+                  },
+                  "accuracy": {
+                    "type": "number"
+                  },
+                  "source": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "lat",
+                  "lon"
+                ]
+              },
+              "example": {
+                "lat": 55.9712,
+                "lon": 37.415,
+                "speedMs": 1.3,
+                "heading": 90,
+                "source": "gps"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agents/{id}/shift": {
+      "post": {
+        "summary": "Начало/окончание смены сотрудника",
+        "description": "Доступ: начальник смены.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "onShift": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "onShift"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vehicles": {
+      "get": {
+        "summary": "Спецтранспорт: положение и текущее задание",
+        "description": "Доступ: начальник смены, интеграция.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/vehicles/{id}/task": {
+      "get": {
+        "summary": "Задание транспорта (маршрут подачи)",
+        "description": "Доступ: начальник смены, интеграция.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/vehicles/{id}/position": {
+      "post": {
+        "summary": "Приём геопозиции транспорта",
+        "description": "Доступ: начальник смены, интеграция.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "lat": {
+                    "type": "number"
+                  },
+                  "lon": {
+                    "type": "number"
+                  },
+                  "ts": {
+                    "type": "any"
+                  },
+                  "speedMs": {
+                    "type": "number"
+                  },
+                  "heading": {
+                    "type": "number"
+                  },
+                  "accuracy": {
+                    "type": "number"
+                  },
+                  "source": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "lat",
+                  "lon"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/positions": {
+      "post": {
+        "summary": "Пакетный приём геопозиций { items:[{kind:agent|vehicle|aircraft,id,lat,lon,...}] }",
+        "description": "Доступ: интеграция. Частичный успех: ответ содержит accepted/rejected.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "items": {
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "items"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/aircraft": {
+      "get": {
+        "summary": "ВС: состояние, стоянка, рейс",
+        "description": "Доступ: any.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/aircraft/{regNo}/position": {
+      "post": {
+        "summary": "Приём положения ВС от внешней системы (A-SMGCS)",
+        "description": "Доступ: интеграция, начальник смены.",
+        "parameters": [
+          {
+            "name": "regNo",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "type": "string"
+                  },
+                  "standId": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "family": {
+                    "type": "string"
+                  },
+                  "lat": {
+                    "type": "number"
+                  },
+                  "lon": {
+                    "type": "number"
+                  },
+                  "ts": {
+                    "type": "any"
+                  },
+                  "speedMs": {
+                    "type": "number"
+                  },
+                  "heading": {
+                    "type": "number"
+                  },
+                  "accuracy": {
+                    "type": "number"
+                  },
+                  "source": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "lat",
+                  "lon"
+                ]
+              },
+              "example": {
+                "lat": 55.9706,
+                "lon": 37.418,
+                "heading": 270,
+                "speedMs": 6,
+                "state": "taxiing"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/schedule": {
+      "get": {
+        "summary": "Расписание рейсов",
+        "description": "Доступ: any.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/schedule/flights": {
+      "post": {
+        "summary": "Приём расписания (AODB): STA/ETA/STD по бортам",
+        "description": "Доступ: интеграция, начальник смены.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "flights": {
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "flights"
+                ]
+              },
+              "example": {
+                "flights": [
+                  {
+                    "flight": "SU1701",
+                    "regNo": "VQ-BAD",
+                    "sta": "2026-01-01T12:20:00+03:00",
+                    "std": "2026-01-01T13:30:00+03:00",
+                    "standId": "S08"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/integration/status": {
+      "get": {
+        "summary": "Состояние внешних источников данных",
+        "description": "Доступ: начальник смены, интеграция.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "[{ id, status: online|stale|offline, lastOkAt, lastError }]"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/integration/sources/{id}/outage": {
+      "post": {
+        "summary": "Имитация аварии внешней системы (канал отклоняет данные; система работает на последних известных)",
+        "description": "Доступ: начальник смены, интеграция.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "active": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "active"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/integration/sources/{id}": {
+      "put": {
+        "summary": "Настроить опрос внешней системы (pull URL)",
+        "description": "Доступ: начальник смены.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pullUrl": {
+                    "type": "string"
+                  }
+                },
+                "required": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/integration/sources/{id}/pull": {
+      "post": {
+        "summary": "Выполнить опрос внешней системы по pullUrl (при сбое — последние известные данные)",
+        "description": "Доступ: начальник смены.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/routes": {
+      "post": {
+        "summary": "Построить маршрут по дорожному графу: from/to/via — {lat,lon} | {nodeId} | {standId} | {facilityId}",
+        "description": "Доступ: начальник смены, инженер, интеграция.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "{ ok, points[], steps[], warnings[], distanceM, durationS }"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "object"
+                  },
+                  "to": {
+                    "type": "object"
+                  },
+                  "via": {
+                    "type": "array"
+                  },
+                  "mode": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "from",
+                  "to"
+                ]
+              },
+              "example": {
+                "from": {
+                  "lat": 55.9724,
+                  "lon": 37.4136
+                },
+                "via": [
+                  {
+                    "facilityId": "TOOLS"
+                  }
+                ],
+                "to": {
+                  "standId": "S04"
+                },
+                "mode": "vehicle"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/journal": {
+      "get": {
+        "summary": "Журнал событий (хронологический)",
+        "description": "Доступ: начальник смены.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/journal/export": {
+      "get": {
+        "summary": "Выгрузка журнала: format=xlsx|csv (одна строка = одно событие)",
+        "description": "Доступ: начальник смены.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "файл"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/admin/reset": {
+      "post": {
+        "summary": "Сброс оперативных данных к учебному начальному состоянию",
+        "description": "Доступ: начальник смены.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Ошибка: { error: { code, message, details } }"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  }
+}

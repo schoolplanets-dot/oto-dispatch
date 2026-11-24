@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: oto-dispatch
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: SIM
+        value: "1"
+      - key: SCALE
+        value: "10"
+      - key: OTO_DEMO
+        value: "1"

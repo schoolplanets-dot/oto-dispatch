@@ -1,0 +1,17 @@
+{
+  "name": "Админавтотрап · Диспетчеризация инженеров ОТО",
+  "short_name": "ОТО Диспетчер",
+  "description": "Оперативная диспетчеризация инженеров линейного ТО по карте аэродрома: подбор исполнителя, маршрут до ВС, контроль норматива 15 минут",
+  "lang": "ru",
+  "start_url": "/?mode=oto",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

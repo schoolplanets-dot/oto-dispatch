@@ -1,0 +1,41 @@
+# Системные требования + создание заявок для испытаний (UI)
+from playwright.sync_api import sync_playwright
+URL='file:///home/ubuntu/oto/dist/Админавтотрап_ОТО.html'
+with sync_playwright() as p:
+    b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox'])
+    errs=[]
+    pg=b.new_context(viewport={'width':1440,'height':960}).new_page()
+    pg.on('pageerror',lambda e: errs.append('PAGEERR '+str(e)))
+    pg.on('console',lambda m: errs.append(m.text) if m.type=='error' else None)
+    pg.goto(URL); pg.wait_for_timeout(600)
+    pg.click('[data-u="SM-01"]'); pg.click('button[type=submit]'); pg.wait_for_timeout(1500)
+    # вкладка Системные требования
+    pg.click('[data-tab=sysreq]'); pg.wait_for_timeout(600)
+    print('values', pg.evaluate("Array.from(document.querySelectorAll('[data-pane=sysreq] [data-p]')).map(i=>i.dataset.p+'='+i.value).join(' ')"))
+    pg.screenshot(path='shots/40_sysreq.png')
+    pg.click('[data-pane=sysreq] [data-a=calc]'); pg.wait_for_timeout(600)
+    print('calc', pg.inner_text('[data-pane=sysreq] [data-r=out]')[:600].replace('\n',' | '))
+    pg.select_option('[data-pane=sysreq] [data-r=mode]','vehicle'); pg.check('[data-pane=sysreq] [data-r=tool]'); pg.click('[data-pane=sysreq] [data-a=calc]'); pg.wait_for_timeout(600)
+    print('calc2', pg.inner_text('[data-pane=sysreq] [data-r=out]')[-400:].replace('\n',' | '))
+    pg.screenshot(path='shots/41_sysreq_calc.png', full_page=True)
+    # правка параметра
+    pg.fill('[data-pane=sysreq] [data-p="v.other"]','25'); pg.click('[data-pane=sysreq] [data-a=save]'); pg.wait_for_timeout(600)
+    print('other after save', pg.evaluate("OTO.App.state.params.vehicleKmh.other"))
+    pg.click('[data-pane=sysreq] [data-a=def]'); pg.wait_for_timeout(600)
+    print('other after default', pg.evaluate("OTO.App.state.params.vehicleKmh.other"))
+    # глобальная кнопка ＋ Заявка на другой вкладке
+    pg.click('[data-h=newticket]'); pg.wait_for_timeout(500)
+    print('modal title', pg.inner_text('.oto-modal h3, .oto-modal-h')[:80] if pg.query_selector('.oto-modal h3, .oto-modal-h') else pg.evaluate("document.querySelector('.oto-modal-bg')?.innerText.slice(0,80)"))
+    pg.screenshot(path='shots/42_newticket.png')
+    pg.click('[data-act-test]'); pg.wait_for_timeout(400)
+    pg.fill('[name=n]','4'); pg.click('[data-go]'); pg.wait_for_timeout(1500)
+    print('res', pg.inner_text('[data-res]'))
+    pg.screenshot(path='shots/43_testtickets.png')
+    pg.click('[data-tt=batch]'); pg.click('[data-go]'); pg.wait_for_timeout(1200)
+    print('res2', pg.inner_text('[data-res]'))
+    n=pg.evaluate("OTO.App.state.tickets.length"); print('tickets', n)
+    pg.keyboard.press('Escape')
+    pg.click('[data-tab=dispatch]'); pg.wait_for_timeout(500)
+    pg.screenshot(path='shots/44_after.png')
+    print('ERRS', errs)
+    b.close()

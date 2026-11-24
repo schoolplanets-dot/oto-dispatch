@@ -1,0 +1,13 @@
+const { mk } = require('./helpers');
+const { S, call, login, OTO } = mk();
+const A = '/api/v1';
+let r = call('GET', A + '/health'); console.log('health', r.status);
+const lead = login('SM-01', '2468');
+r = call('GET', A + '/state', null, lead); console.log('state', r.status, r.body.error || Object.keys(r.body));
+console.log('agents', r.body.agents && r.body.agents.map(a => a.id + ':' + (a.position ? 'pos' : 'nopos')).join(' '));
+r = call('POST', A + '/tickets', { source: 'crew', description: 'Не работает радиосвязь VHF1', regNo: 'VP-BQA', externalRef: 'X1' }, lead);
+console.log('ticket', r.status, r.body.error || r.body.ticket.id, r.body.ticket && r.body.ticket.status);
+const id = r.body.ticket && r.body.ticket.id;
+r = call('GET', A + '/tickets/' + id + '/candidates', null, lead);
+console.log('cand', r.status, r.body.error || JSON.stringify(r.body.candidates.map(c => [c.agentId, c.score, c.eta.totalS, c.mode])), r.body.durationS);
+if (r.body.rejected) console.log('rej', JSON.stringify(r.body.rejected).slice(0, 400));

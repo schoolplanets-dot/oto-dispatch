@@ -1,0 +1,167 @@
+/* ===== Оперативная диспетчеризация ОТО — стили модуля (префикс .oto-). Используют переменные темы исходной программы. ===== */
+body.oto-mode .app-shell, body.oto-mode .auth-backdrop, body.oto-mode #pdfModal { display: none !important; }
+body:not(.oto-mode) #otoRoot { display: none; }
+#otoRoot { --o-bg: var(--canvas, #0f172a); --o-card: var(--card, #1e293b); --o-muted: var(--muted, #273449); --o-line: var(--line, #334155); --o-ink: var(--ink, #e2e8f0); --o-soft: var(--ink-soft, #94a3b8); --o-acc: var(--teal, #38bdf8); --o-ok: var(--green, #22c55e); --o-warn: var(--orange, #f59e0b); --o-bad: var(--red, #ef4444); color: var(--o-ink); min-height: 100vh; font-size: 13px; line-height: 1.4; }
+#otoRoot *, #otoRoot *::before, #otoRoot *::after { box-sizing: border-box; }
+#otoRoot button, #otoRoot select, #otoRoot input, #otoRoot textarea { font: inherit; color: inherit; }
+#otoRoot h2, #otoRoot h3, #otoRoot h4 { margin: 0; letter-spacing: -.01em; }
+.oto-shell { max-width: 1680px; margin: 0 auto; padding: 14px 18px 24px; }
+.oto-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
+.oto-brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.oto-logo { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(145deg, #1b4551, #122a3b); color: #d4f3eb; flex: 0 0 auto; box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); }
+.oto-eyebrow { font-size: 10px; letter-spacing: .13em; text-transform: uppercase; color: #85a1b5; font-weight: 750; }
+.oto-title { font-size: clamp(17px, 2vw, 23px); font-weight: 760; letter-spacing: -.03em; }
+.oto-top-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.oto-clock { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.15; padding: 4px 12px; border: 1px solid var(--o-line); border-radius: 10px; background: rgba(255,255,255,.04); }
+.oto-clock b { font-size: 18px; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.oto-clock span { font-size: 10px; color: var(--o-soft); }
+.oto-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--o-line); background: var(--o-muted); color: var(--o-ink); border-radius: 9px; padding: 7px 11px; font-size: 12px; font-weight: 680; cursor: pointer; transition: background .15s, transform .1s; white-space: nowrap; }
+.oto-btn:hover { background: #334155; }
+.oto-btn:active { transform: translateY(1px); }
+.oto-btn:disabled { opacity: .4; cursor: not-allowed; }
+.oto-btn.primary { background: #0284c7; border-color: #0284c7; color: #fff; } .oto-btn.primary:hover { background: #0369a1; }
+.oto-btn.danger { color: #fca5a5; border-color: rgba(239,68,68,.45); } .oto-btn.warn { color: #fbbf24; border-color: rgba(245,158,11,.45); }
+.oto-btn.ok { background: rgba(34,197,94,.16); border-color: rgba(34,197,94,.5); color: #86efac; }
+.oto-btn.sm { padding: 4px 8px; font-size: 11px; border-radius: 7px; } .oto-btn.lg { padding: 12px 16px; font-size: 14px; border-radius: 12px; }
+.oto-btn.block { width: 100%; }
+.oto-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--o-line); margin-bottom: 12px; overflow-x: auto; scrollbar-width: thin; }
+.oto-tab { background: none; border: 0; border-bottom: 2px solid transparent; padding: 9px 13px; font-weight: 680; color: var(--o-soft); cursor: pointer; white-space: nowrap; font-size: 13px; }
+.oto-tab:hover { color: var(--o-ink); } .oto-tab.on { color: var(--o-acc); border-bottom-color: var(--o-acc); }
+.oto-tab .cnt { display: inline-block; min-width: 18px; padding: 0 5px; margin-left: 5px; border-radius: 9px; background: var(--o-bad); color: #fff; font-size: 10px; text-align: center; }
+.oto-card { background: var(--o-card); border: 1px solid var(--o-line); border-radius: 13px; padding: 12px 13px; }
+.oto-card > h3 { font-size: 13px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.oto-card > h3 small { color: var(--o-soft); font-weight: 500; font-size: 11px; }
+.oto-sub { color: var(--o-soft); font-size: 11.5px; }
+.oto-grid-main { display: grid; grid-template-columns: minmax(0, 1fr) 470px; gap: 12px; align-items: start; }
+.oto-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+@media (max-width: 1100px) { .oto-grid-main { grid-template-columns: 1fr; } }
+.oto-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(125px, 1fr)); gap: 8px; }
+.oto-kpi { background: var(--o-card); border: 1px solid var(--o-line); border-radius: 11px; padding: 8px 11px; }
+.oto-kpi b { display: block; font-size: 21px; letter-spacing: -.02em; font-variant-numeric: tabular-nums; line-height: 1.15; }
+.oto-kpi span { font-size: 10.5px; color: var(--o-soft); }
+.oto-kpi.bad b { color: #fca5a5; } .oto-kpi.warn b { color: #fbbf24; } .oto-kpi.ok b { color: #86efac; }
+.oto-chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 1px 8px; font-size: 10.5px; font-weight: 700; background: var(--o-muted); color: #cbd5e1; border: 1px solid transparent; white-space: nowrap; }
+.oto-chip.ok { background: rgba(34,197,94,.14); color: #86efac; } .oto-chip.warning { background: rgba(245,158,11,.16); color: #fbbf24; }
+.oto-chip.critical { background: rgba(239,68,68,.18); color: #fca5a5; } .oto-chip.violated { background: #7f1d1d; color: #fecaca; }
+.oto-chip.aog { background: #b91c1c; color: #fff; } .oto-chip.urgent { background: rgba(245,158,11,.2); color: #fbbf24; } .oto-chip.info { background: rgba(56,189,248,.14); color: #7dd3fc; }
+.oto-chip.offline { background: rgba(239,68,68,.18); color: #fca5a5; } .oto-chip.stale { background: rgba(245,158,11,.16); color: #fbbf24; } .oto-chip.online { background: rgba(34,197,94,.14); color: #86efac; } .oto-chip.unknown { background: var(--o-muted); }
+/* карта */
+.oto-map-wrap { position: relative; border-radius: 13px; overflow: hidden; border: 1px solid var(--o-line); background: #0b1220; }
+.oto-map { width: 100%; height: clamp(360px, 56vh, 640px); }
+.oto-map.phone { height: 230px; }
+.oto-map-svg { width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; user-select: none; --k: 1; }
+.oto-map-svg:active { cursor: grabbing; }
+.oto-map-tools { position: absolute; top: 8px; right: 8px; display: flex; flex-direction: column; gap: 4px; z-index: 3; }
+.oto-map-tools button { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--o-line); background: rgba(15,23,42,.88); cursor: pointer; font-weight: 800; }
+.oto-layers { position: absolute; left: 8px; top: 8px; z-index: 3; background: rgba(15,23,42,.9); border: 1px solid var(--o-line); border-radius: 10px; padding: 6px 9px; display: flex; flex-wrap: wrap; gap: 4px 11px; max-width: 70%; font-size: 11px; }
+.oto-layers label { display: flex; gap: 4px; align-items: center; cursor: pointer; color: #cbd5e1; }
+.oto-legend { position: absolute; left: 8px; bottom: 8px; z-index: 3; background: rgba(15,23,42,.9); border: 1px solid var(--o-line); border-radius: 10px; padding: 5px 9px; font-size: 10.5px; color: #cbd5e1; display: flex; gap: 10px; flex-wrap: wrap; max-width: 85%; }
+.oto-legend i { display: inline-block; width: 14px; height: 3px; vertical-align: middle; margin-right: 4px; border-radius: 2px; }
+.oto-map-svg .oto-area { stroke: rgba(148,163,184,.22); stroke-width: calc(1px * var(--k)); }
+.oto-map-svg .oto-area-label { fill: #64748b; font-size: calc(11px * var(--k)); text-anchor: middle; letter-spacing: .12em; font-weight: 700; pointer-events: none; }
+.oto-map-svg .oto-edge { stroke: #475569; stroke-width: calc(2.2px * var(--k)); stroke-linecap: round; }
+.oto-map-svg .oto-edge.k-taxiway, .oto-map-svg .oto-edge.k-stand_taxilane { stroke: #6b5b2e; stroke-dasharray: calc(8px * var(--k)) calc(5px * var(--k)); }
+.oto-map-svg .oto-edge.k-crossing { stroke: #db2777; stroke-width: calc(3px * var(--k)); }
+.oto-map-svg .oto-edge.k-service_road { stroke: #64748b; } .oto-map-svg .oto-edge.k-apron_lane, .oto-map-svg .oto-edge.k-stand_lane { stroke: #3f566d; }
+.oto-map-svg .oto-edge.veh-only { stroke-width: calc(3px * var(--k)); } .oto-map-svg .oto-edge.excluded { stroke: #7f1d1d; stroke-dasharray: calc(2px * var(--k)) calc(5px * var(--k)); opacity: .8; }
+.oto-map-svg .oto-node { fill: #64748b; } .oto-map-svg .oto-node.k-gate { fill: #38bdf8; }
+.oto-map-svg .oto-zone { stroke-width: calc(2px * var(--k)); fill-opacity: .55; pointer-events: none; }
+.oto-map-svg .oto-zone-label { font-size: calc(10px * var(--k)); text-anchor: middle; font-weight: 700; pointer-events: none; paint-order: stroke; stroke: #0b1220; stroke-width: calc(3px * var(--k)); }
+.oto-map-svg .oto-lbl { font-size: 10px; fill: #cbd5e1; text-anchor: middle; pointer-events: none; paint-order: stroke; stroke: #0b1220; stroke-width: 3px; }
+.oto-map-svg.no-labels .oto-lbl { display: none; }
+.oto-map-svg .oto-fac .fac-box { fill: #1e3a4c; stroke: #38bdf8; stroke-width: 1.3px; } .oto-map-svg .fac-g { font-size: 9px; fill: #bae6fd; text-anchor: middle; font-weight: 800; pointer-events: none; }
+.oto-map-svg .oto-fac, .oto-map-svg .oto-stand, .oto-map-svg .oto-ac, .oto-map-svg .oto-agent, .oto-map-svg .oto-veh { }
+.oto-map-svg .oto-stand { cursor: pointer; } .oto-map-svg .stand-box { fill: #172235; stroke: #64748b; stroke-width: 1.4px; } .oto-map-svg .stand-box.remote { stroke-dasharray: 4px 3px; }
+.oto-map-svg .stand-t { font-size: 9.5px; fill: #cbd5e1; text-anchor: middle; font-weight: 700; pointer-events: none; }
+.oto-map-svg .oto-stand.has-ticket .stand-box { stroke-width: 2.6px; stroke: #22c55e; } .oto-map-svg .oto-stand[data-risk=warning] .stand-box { stroke: #f59e0b; } .oto-map-svg .oto-stand[data-risk=critical] .stand-box, .oto-map-svg .oto-stand[data-risk=violated] .stand-box { stroke: #ef4444; fill: rgba(239,68,68,.2); }
+.oto-map-svg .oto-ac { cursor: pointer; } .oto-map-svg .ac-body { fill: #e2e8f0; stroke: #0b1220; stroke-width: .8px; } .oto-map-svg .oto-ac.has-ticket .ac-body { fill: #fde68a; } .oto-map-svg .oto-ac.moving .ac-body { fill: #fb923c; }
+.oto-map-svg .ac-zone { fill: rgba(251,146,60,.08); stroke: #fb923c; stroke-dasharray: calc(5px * var(--k)) calc(4px * var(--k)); stroke-width: calc(1px * var(--k)); pointer-events: none; }
+.oto-map-svg .oto-veh { cursor: pointer; } .oto-map-svg .veh-box { fill: #78350f; stroke: #fbbf24; stroke-width: 1.3px; } .oto-map-svg .oto-veh.busy .veh-box { fill: #b45309; } .oto-map-svg .veh-g { font-size: 9px; fill: #fff; text-anchor: middle; font-weight: 800; pointer-events: none; }
+.oto-map-svg .oto-agent { cursor: pointer; } .oto-map-svg .ag-c { stroke: #0b1220; stroke-width: 2px; } .oto-map-svg .ag-t { font-size: 8.5px; fill: #fff; text-anchor: middle; font-weight: 800; pointer-events: none; }
+.oto-map-svg .oto-agent.st-offered .ag-c { stroke: #fbbf24; stroke-width: 3px; } .oto-map-svg .oto-agent.st-assigned .ag-c, .oto-map-svg .oto-agent.st-en_route .ag-c { stroke: #38bdf8; stroke-width: 3px; }
+.oto-map-svg .oto-agent.st-on_site .ag-c, .oto-map-svg .oto-agent.st-in_progress .ag-c { stroke: #22c55e; stroke-width: 3px; } .oto-map-svg .oto-agent.stale { opacity: .55; } .oto-map-svg .oto-agent.sel .ag-c { stroke: #fff; stroke-width: 3.5px; }
+.oto-map-svg .oto-route { fill: none; stroke-width: calc(3px * var(--k)); stroke-linecap: round; stroke-linejoin: round; opacity: .55; pointer-events: none; } .oto-map-svg .oto-route.sel { opacity: 1; stroke-width: calc(4.5px * var(--k)); } .oto-map-svg .oto-route.veh { stroke-dasharray: calc(10px * var(--k)) calc(5px * var(--k)); }
+.oto-map-svg .oto-route.vroute { stroke: #fbbf24; stroke-dasharray: calc(3px * var(--k)) calc(6px * var(--k)); opacity: .8; } .oto-map-svg .oto-dest { r: calc(8px * var(--k)); fill: none; stroke: #fff; stroke-width: calc(2px * var(--k)); }
+.oto-map-svg .oto-pulse { r: calc(24px * var(--k)); fill: none; stroke: #38bdf8; stroke-width: calc(2.5px * var(--k)); animation: otoPulse 1.6s ease-out infinite; transform-box: fill-box; transform-origin: center; pointer-events: none; }
+@keyframes otoPulse { 0% { opacity: 1; transform: scale(.7); } 100% { opacity: 0; transform: scale(1.6); } }
+.oto-map-svg .oto-marker { r: calc(6px * var(--k)); fill: #38bdf8; stroke: #fff; stroke-width: calc(2px * var(--k)); }
+/* оповещения и заявки */
+.oto-alerts { display: flex; flex-direction: column; gap: 8px; }
+.oto-alert { border: 1px solid var(--o-line); border-left: 4px solid var(--o-warn); border-radius: 10px; padding: 8px 10px; background: rgba(245,158,11,.08); }
+.oto-alert.critical { border-left-color: var(--o-bad); background: rgba(239,68,68,.1); } .oto-alert.info { border-left-color: var(--o-acc); background: rgba(56,189,248,.08); }
+.oto-alert .hd { display: flex; justify-content: space-between; gap: 6px; font-size: 11px; color: var(--o-soft); } .oto-alert .msg { font-size: 12.5px; margin: 3px 0 6px; }
+.oto-alert .vars { display: flex; flex-direction: column; gap: 4px; } .oto-alert .vars .oto-btn { justify-content: flex-start; white-space: normal; text-align: left; }
+.oto-tlist { display: flex; flex-direction: column; gap: 6px; max-height: 360px; overflow: auto; padding-right: 2px; }
+.oto-ticket { border: 1px solid var(--o-line); border-radius: 10px; padding: 7px 9px; background: var(--o-muted); cursor: pointer; border-left: 4px solid var(--o-line); }
+.oto-ticket:hover { border-color: #475569; } .oto-ticket.sel { outline: 2px solid var(--o-acc); }
+.oto-ticket[data-risk=warning] { border-left-color: var(--o-warn); } .oto-ticket[data-risk=critical], .oto-ticket[data-risk=violated] { border-left-color: var(--o-bad); } .oto-ticket[data-risk=ok], .oto-ticket[data-risk=met] { border-left-color: var(--o-ok); }
+.oto-ticket .r1 { display: flex; justify-content: space-between; gap: 6px; align-items: center; } .oto-ticket .r1 b { font-size: 12.5px; }
+.oto-ticket .r2 { font-size: 11.5px; color: #cbd5e1; margin: 3px 0; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.oto-ticket .r3 { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; font-size: 11px; color: var(--o-soft); }
+.oto-cd { font-variant-numeric: tabular-nums; font-weight: 750; } .oto-cd.neg { color: #fca5a5; } .oto-cd.pos { color: #86efac; }
+.oto-seg { display: inline-flex; border: 1px solid var(--o-line); border-radius: 8px; overflow: hidden; } .oto-seg button { background: none; border: 0; padding: 4px 9px; font-size: 11px; cursor: pointer; color: var(--o-soft); } .oto-seg button.on { background: var(--o-acc); color: #0b1220; font-weight: 700; }
+.oto-kv { display: grid; grid-template-columns: 112px 1fr; gap: 3px 8px; font-size: 12px; } .oto-kv dt { color: var(--o-soft); } .oto-kv dd { margin: 0; min-width: 0; word-break: break-word; }
+.oto-sec { border-top: 1px solid var(--o-line); margin-top: 10px; padding-top: 9px; } .oto-sec > h4 { font-size: 12px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; color: #cbd5e1; }
+.oto-fc { border-radius: 10px; padding: 8px 10px; background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.3); } .oto-fc.warning { background: rgba(245,158,11,.1); border-color: rgba(245,158,11,.4); } .oto-fc.critical, .oto-fc.violated { background: rgba(239,68,68,.1); border-color: rgba(239,68,68,.45); }
+.oto-bar { height: 8px; border-radius: 4px; background: #172235; position: relative; overflow: hidden; margin: 6px 0; } .oto-bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--o-ok); } .oto-bar i.w { background: var(--o-warn); } .oto-bar i.b { background: var(--o-bad); }
+.oto-cand { border: 1px solid var(--o-line); border-radius: 10px; padding: 8px 9px; background: var(--o-muted); margin-bottom: 6px; } .oto-cand.best { border-color: rgba(34,197,94,.55); background: linear-gradient(110deg, rgba(34,197,94,.1), var(--o-muted)); }
+.oto-cand .hd { display: flex; justify-content: space-between; gap: 8px; align-items: center; } .oto-cand ul { margin: 5px 0 0; padding-left: 16px; font-size: 11.5px; color: #cbd5e1; } .oto-cand ul.neg { color: #fda4af; } .oto-cand ul.warn { color: #fcd34d; }
+.oto-cand .bd { font-size: 10.5px; color: var(--o-soft); margin-top: 4px; }
+.oto-rej { font-size: 11.5px; color: #cbd5e1; border-top: 1px dashed var(--o-line); padding: 4px 0; } .oto-rej b { color: #fda4af; font-weight: 600; }
+.oto-form { display: grid; gap: 8px; } .oto-form label { font-size: 11px; color: var(--o-soft); display: block; margin-bottom: 2px; }
+.oto-in, .oto-form select, .oto-form input, .oto-form textarea, .oto-sel { width: 100%; background: #172235; color: var(--o-ink); border: 1px solid #475569; border-radius: 8px; padding: 7px 9px; }
+.oto-in.sm, .oto-sel.sm { width: auto; padding: 4px 7px; font-size: 12px; }
+.oto-form textarea { min-height: 70px; resize: vertical; } .oto-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; } .oto-row.sp { justify-content: space-between; } .oto-grow { flex: 1; min-width: 0; }
+.oto-timeline { margin: 0; padding: 0; list-style: none; font-size: 11.5px; } .oto-timeline li { padding: 3px 0 3px 12px; border-left: 2px solid var(--o-line); position: relative; } .oto-timeline li::before { content: ''; position: absolute; left: -5px; top: 9px; width: 8px; height: 8px; border-radius: 50%; background: var(--o-acc); } .oto-timeline time { color: var(--o-soft); font-variant-numeric: tabular-nums; margin-right: 6px; }
+.oto-sugg { display: flex; flex-direction: column; gap: 4px; } .oto-sugg button { text-align: left; background: var(--o-muted); border: 1px solid var(--o-line); border-radius: 8px; padding: 5px 8px; cursor: pointer; font-size: 12px; } .oto-sugg button.on { border-color: var(--o-acc); background: rgba(56,189,248,.12); }
+.oto-modal-bg { position: fixed; inset: 0; background: rgba(2,6,23,.7); z-index: 1000; display: flex; align-items: flex-start; justify-content: center; padding: 4vh 12px; overflow: auto; }
+.oto-modal { width: min(720px, 100%); background: var(--o-card); border: 1px solid #475569; border-radius: 14px; padding: 16px; box-shadow: 0 30px 80px rgba(0,0,0,.5); } .oto-modal.wide { width: min(1000px, 100%); } .oto-modal h3 { font-size: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; }
+.oto-toasts { position: fixed; right: 14px; bottom: 14px; z-index: 1100; display: flex; flex-direction: column; gap: 6px; max-width: min(420px, calc(100vw - 28px)); }
+.oto-toast { background: #0b1220; border: 1px solid #475569; border-left: 4px solid var(--o-acc); border-radius: 9px; padding: 8px 11px; box-shadow: 0 8px 24px rgba(0,0,0,.4); font-size: 12.5px; animation: otoIn .2s ease-out; } .oto-toast.err { border-left-color: var(--o-bad); } .oto-toast.warn { border-left-color: var(--o-warn); } .oto-toast.ok { border-left-color: var(--o-ok); }
+@keyframes otoIn { from { opacity: 0; transform: translateY(8px); } }
+/* таблицы */
+.oto-tbl-wrap { overflow: auto; max-height: 68vh; border: 1px solid var(--o-line); border-radius: 10px; } .oto-tbl { width: 100%; border-collapse: collapse; font-size: 12px; } .oto-tbl th { position: sticky; top: 0; background: #172235; text-align: left; padding: 6px 8px; font-size: 11px; color: var(--o-soft); z-index: 1; white-space: nowrap; } .oto-tbl td { padding: 5px 8px; border-top: 1px solid var(--o-line); vertical-align: top; } .oto-tbl tr:hover td { background: rgba(255,255,255,.03); }
+.oto-tbl td.mono, .oto-mono { font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; white-space: nowrap; }
+.oto-tbl td.txt { min-width: 320px; } .oto-ev-aog, tr.ev-bad td { background: rgba(239,68,68,.06); } tr.ev-warn td { background: rgba(245,158,11,.05); }
+.oto-pre { background: #0b1220; border: 1px solid var(--o-line); border-radius: 8px; padding: 8px; font-size: 11px; overflow: auto; max-height: 260px; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.oto-m { display: inline-block; min-width: 46px; text-align: center; border-radius: 5px; padding: 1px 5px; font-size: 10.5px; font-weight: 800; font-family: ui-monospace, monospace; } .oto-m.GET { background: rgba(56,189,248,.18); color: #7dd3fc; } .oto-m.POST { background: rgba(34,197,94,.16); color: #86efac; } .oto-m.PUT, .oto-m.PATCH { background: rgba(245,158,11,.16); color: #fbbf24; } .oto-m.DELETE { background: rgba(239,68,68,.18); color: #fca5a5; }
+.oto-arch { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; } @media (max-width: 800px) { .oto-arch { grid-template-columns: 1fr 1fr; } } .oto-arch > div { border: 1px solid var(--o-line); border-radius: 10px; padding: 8px 10px; background: var(--o-muted); font-size: 11.5px; } .oto-arch b { display: block; font-size: 12.5px; margin-bottom: 3px; color: var(--o-acc); } .oto-arch code { font-size: 10.5px; color: #94a3b8; word-break: break-all; }
+.oto-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; } @media (max-width: 900px) { .oto-two { grid-template-columns: 1fr; } }
+.oto-note { font-size: 11.5px; color: #cbd5e1; background: rgba(56,189,248,.08); border: 1px solid rgba(56,189,248,.25); border-radius: 9px; padding: 7px 10px; } .oto-note.warn { background: rgba(245,158,11,.08); border-color: rgba(245,158,11,.3); }
+/* вход */
+.oto-login-bg { position: fixed; inset: 0; z-index: 900; display: grid; place-items: center; padding: 14px; background: radial-gradient(ellipse at top, #1b2a40 0%, #0f172a 54%, #0b1120 100%); overflow: auto; }
+.oto-login { width: min(480px, 100%); } .oto-login .oto-card { padding: 20px; } .oto-login h2 { font-size: 20px; margin: 4px 0 6px; } .oto-userlist { display: grid; gap: 6px; margin: 10px 0; max-height: 260px; overflow: auto; } .oto-userlist button { text-align: left; display: flex; justify-content: space-between; gap: 8px; align-items: center; background: var(--o-muted); border: 1px solid var(--o-line); border-radius: 9px; padding: 7px 10px; cursor: pointer; } .oto-userlist button.on { border-color: var(--o-acc); background: rgba(56,189,248,.12); }
+/* телефон инженера */
+.oto-phone-wrap { display: flex; justify-content: center; } .oto-phone { width: min(410px, 100%); border: 2px solid #475569; border-radius: 26px; padding: 10px; background: #0b1220; box-shadow: 0 20px 60px rgba(0,0,0,.45); display: flex; flex-direction: column; gap: 9px; }
+.oto-phone.bare { border: 0; box-shadow: none; padding: 0; background: none; width: min(520px, 100%); }
+.oto-ph-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 2px 6px; } .oto-ph-head b { font-size: 14px; }
+.oto-offer { border: 2px solid var(--o-warn); border-radius: 14px; padding: 11px; background: rgba(245,158,11,.1); animation: otoBlink 1.4s ease-in-out infinite; } @keyframes otoBlink { 50% { box-shadow: 0 0 0 5px rgba(245,158,11,.2); } }
+.oto-warnb { border-radius: 10px; padding: 8px 10px; border: 1px solid rgba(245,158,11,.5); background: rgba(245,158,11,.12); color: #fde68a; font-size: 12.5px; margin-bottom: 6px; } .oto-warnb.critical { border-color: var(--o-bad); background: rgba(239,68,68,.16); color: #fecaca; font-weight: 700; } .oto-warnb.info { border-color: rgba(56,189,248,.4); background: rgba(56,189,248,.08); color: #bae6fd; }
+.oto-steps { margin: 0; padding-left: 18px; font-size: 12px; color: #cbd5e1; } .oto-steps li { margin: 2px 0; }
+.oto-stage { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; } .oto-stage button { padding: 7px 2px; font-size: 11px; border-radius: 8px; border: 1px solid var(--o-line); background: var(--o-muted); cursor: pointer; } .oto-stage button.on { background: var(--o-acc); color: #0b1220; font-weight: 800; border-color: var(--o-acc); } .oto-stage button.done { color: #86efac; }
+.oto-switch { display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer; }
+.oto-hide { display: none !important; }
+@media (max-width: 640px) { .oto-shell { padding: 8px 8px 20px; } .oto-kpi b { font-size: 17px; } .oto-map { height: 46vh; } .oto-layers { max-width: calc(100% - 56px); } .oto-kv { grid-template-columns: 96px 1fr; } }
+
+.oto-form label.oto-switch, label.oto-switch { display: flex; margin: 0; font-size: 12px; color: var(--o-ink); }
+.oto-form input[type=checkbox], .oto-switch input, .oto-layers input { width: auto; padding: 0; margin: 0; }
+
+/* ---- Карта по слоям GeoJSON (QGIS): подложка, контуры, классы скоростей ---- */
+.oto-map-attr { position: absolute; right: 6px; bottom: 4px; font-size: 10px; color: #94a3b8; background: rgba(11,18,32,.7); padding: 1px 6px; border-radius: 6px; z-index: 2; pointer-events: auto; } .oto-map-attr:empty { display: none; } .oto-map-attr a { color: #bae6fd; }
+.oto-map-svg .oto-tile { pointer-events: none; image-rendering: auto; }
+.oto-map-svg .oto-area.k-boundary { fill: rgba(56,189,248,.03); stroke: #38bdf8; stroke-width: calc(1.6px * var(--k)); stroke-dasharray: calc(10px * var(--k)) calc(5px * var(--k)); pointer-events: none; }
+.oto-map-svg .oto-area.k-building { fill: rgba(148,163,184,.28); stroke: #94a3b8; } .oto-map-svg .oto-area.k-terminal { fill: rgba(56,189,248,.22); stroke: #38bdf8; }
+.oto-map-svg .oto-stand-zone { fill: rgba(251,191,36,.20); stroke: #f59e0b; stroke-width: calc(1.2px * var(--k)); cursor: pointer; }
+.oto-map-svg .oto-edge.k-runway { stroke: #e2e8f0; stroke-width: calc(5px * var(--k)); opacity: .55; }
+.oto-map-svg .oto-edge.k-taxiway { stroke: #a16207; stroke-width: calc(1.6px * var(--k)); }
+.oto-map-svg .oto-edge.k-footpath { stroke: #d946ef; stroke-width: calc(1.4px * var(--k)); stroke-dasharray: calc(3px * var(--k)) calc(3px * var(--k)); }
+.oto-map-svg .oto-edge.k-crossing { stroke: #db2777; }
+.oto-map-svg.by-speed .oto-edge.sc-stand { stroke: #22c55e; } .oto-map-svg.by-speed .oto-edge.sc-terminal_apron { stroke: #38bdf8; } .oto-map-svg.by-speed .oto-edge.sc-apron { stroke: #f59e0b; } .oto-map-svg.by-speed .oto-edge.sc-other { stroke: #ef4444; stroke-width: calc(3px * var(--k)); }
+.oto-map-svg .oto-edge[data-pick] { cursor: pointer; } .oto-map-svg .oto-edge.hl { stroke: #fff !important; stroke-width: calc(5px * var(--k)); }
+.oto-mapframe { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 10px; } @media (max-width: 900px) { .oto-mapframe { grid-template-columns: 1fr; } }
+.oto-mapframe .oto-map { height: calc(100vh - 190px); min-height: 420px; }
+.oto-map-hud { position: absolute; left: 8px; bottom: 6px; z-index: 2; display: flex; gap: 8px; align-items: flex-end; font-size: 11px; color: #cbd5e1; pointer-events: none; }
+.oto-map-hud > span { background: rgba(11,18,32,.78); border-radius: 6px; padding: 2px 6px; }
+.oto-scale { display: inline-block; border: 2px solid #cbd5e1; border-top: none; height: 6px; margin-right: 4px; vertical-align: middle; }
+.oto-mlegend { display: grid; gap: 4px; font-size: 12px; } .oto-mlegend i { display: inline-block; width: 26px; height: 0; border-top: 3px solid; vertical-align: middle; margin-right: 6px; } .oto-mlegend i.box { height: 10px; border: 1px solid; }
+.oto-layerlist label { display: flex; gap: 6px; align-items: center; padding: 2px 0; font-size: 12.5px; }
